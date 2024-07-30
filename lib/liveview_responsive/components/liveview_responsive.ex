@@ -1,9 +1,9 @@
-defmodule LiveviewResponsive.HookComponent do
+defmodule LiveviewResponsive.Components.LiveviewResponsive do
   @moduledoc false
 
   import Phoenix.Component
 
-  def liveview_responsive_hook(assigns) do
+  def liveview_responsive(assigns) do
     id = "liveview-responsive-#{:erlang.unique_integer([:positive])}"
     assigns = Map.put(assigns, :id, id)
 

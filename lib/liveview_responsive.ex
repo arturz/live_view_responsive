@@ -8,9 +8,9 @@ defmodule LiveviewResponsive do
 
   defdelegate liveview_responsive_synced?(assigns), to: LiveviewResponsive.Core
 
-  defdelegate liveview_responsive_hook(assigns), to: LiveviewResponsive.HookComponent
+  defdelegate liveview_responsive(assigns), to: LiveviewResponsive.Components.LiveviewResponsive
 
-  defdelegate media_query(assigns), to: LiveviewResponsive.MediaQueryComponent
+  defdelegate media_query(assigns), to: LiveviewResponsive.Components.MediaQuery
 
   defmacro __using__(_opts) do
     quote do
