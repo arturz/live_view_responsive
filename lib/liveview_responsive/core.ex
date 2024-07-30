@@ -44,8 +44,6 @@ defmodule LiveviewResponsive.Core do
       |> get_state()
       |> State.get_queries_names()
 
-    IO.inspect(queries_names, label: "queries_values")
-
     socket =
       socket
       |> get_state()
@@ -98,7 +96,7 @@ defmodule LiveviewResponsive.Core do
       |> State.set_status(:hook_attached)
       |> put_state_to_socket(socket)
       |> attach_hook(
-        :private_liveview_responsive_data_hook_mounted,
+        :private_liveview_responsive_after_render_hook,
         :after_render,
         &hook_handler/1
       )
@@ -114,6 +112,7 @@ defmodule LiveviewResponsive.Core do
       |> State.set_status(:hook_runned)
       |> put_state_to_socket(socket)
       |> start_async(:liveview_responsive_start_sync, &noop/0)
+      |> detach_hook(:private_liveview_responsive_after_render_hook, :after_render)
     else
       socket
     end
