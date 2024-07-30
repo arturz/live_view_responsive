@@ -26,8 +26,8 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
           ],
           [%{id: 10, template: %{name: "Czwarty wiersz"}, children_ids: []}]
         ])
-        |> assign_media_query(:xl, query: "(min-width: 1500px)")
-        |> assign_media_query(:lg, query: "(min-width: 1000px)")
+        |> assign_media_query(:xl, min_width: 1400)
+        |> assign_media_query(:lg, min_width: 1000)
 
       {:ok, socket}
     end
@@ -53,17 +53,28 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
 
       ~H"""
       <div>
-        <.liveview_responsive_hook />
+        <.liveview_responsive />
 
-        <.media_query query="(max-width: 1224px)">
+        <.media_query max-width={1224}>
           <p>You are a tablet or mobile</p>
         </.media_query>
-        <.media_query query="(min-width: 1224px)">
+        <.media_query min-width={1225}>
           <p>You are a desktop or laptop</p>
-          <.media_query query="(min-width: 1424px)">
+          <.media_query min-width="1400px">
             <p>You also have a huge screen</p>
           </.media_query>
         </.media_query>
+
+        <.media_query orientation="portrait">
+          <p>You are in portrait mode</p>
+        </.media_query>
+
+        <.media_query min-resolution="2dppx">
+          <p>You are on a retina screen</p>
+        </.media_query>
+
+        <div :if={@xl}>xl</div>
+        <div :if={@lg}>lg</div>
 
         <div id={@id} class="flex flex-col gap-12" :if={liveview_responsive_synced?(assigns)}>
           <div :for={row <- @tree} class="flex justify-center gap-12">
