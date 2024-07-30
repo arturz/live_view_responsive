@@ -1,80 +1,84 @@
-export const LiveviewResponsiveHook = {
-  mounted() {
-    this.__queries = {};
+export const LiveviewResponsiveHook = createLiveviewResponsiveHook();
 
-    this.handleEvent(
-      "liveview-responsive-sync",
-      this.__handleSyncEvent.bind(this)
-    );
-  },
-  destroyed() {
-    Object.values(this.__queries).forEach(({ mql, listener }) => {
-      mql.removeEventListener("change", listener);
-    });
-  },
+export function createLiveviewResponsiveHook(debounceTimeout = 10) {
+  return {
+    mounted() {
+      this.__queries = {};
 
-  /**
-   * @type {Object.<string, {
-   *  query: string,
-   *  mql: MediaQueryList,
-   *  listener: (e: MediaQueryListEvent) => void
-   * }>}
-   */
-  __queries: {},
-
-  __dataToBePushed: {},
-  __pushTimeout: null,
-  __push(data) {
-    if (this.__pushTimeout) {
-      clearTimeout(this.__pushTimeout);
-    }
-
-    Object.assign(this.__dataToBePushed, data);
-
-    this.__pushTimeout = setTimeout(() => {
-      this.pushEventTo(
-        this.el,
-        "liveview-responsive-change",
-        this.__dataToBePushed
+      this.handleEvent(
+        "liveview-responsive-sync",
+        this.__handleSyncEvent.bind(this)
       );
-      this.__dataToBePushed = {};
-      this.__pushTimeout = null;
-    }, 16);
-  },
+    },
+    destroyed() {
+      Object.values(this.__queries).forEach(({ mql, listener }) => {
+        mql.removeEventListener("change", listener);
+      });
+    },
 
-  __handleSyncEvent(data) {
-    const dataToBePushed = Object.entries(data).reduce(
-      (dataToBePushed, [name, query]) => {
-        if (this.__queries[name]) {
-          this.__queries[name].mql.removeEventListener(
-            "change",
-            this.__queries[name].listener
-          );
-        }
+    /**
+     * @type {Object.<string, {
+     *  query: string,
+     *  mql: MediaQueryList,
+     *  listener: (e: MediaQueryListEvent) => void
+     * }>}
+     */
+    __queries: {},
 
-        const mql = window.matchMedia(query);
-        const listener = (e) => {
-          this.__push({
-            [name]: e.matches,
-          });
-        };
+    __dataToBePushed: {},
+    __pushTimeout: null,
+    __push(data) {
+      if (this.__pushTimeout) {
+        clearTimeout(this.__pushTimeout);
+      }
 
-        mql.addEventListener("change", listener);
+      Object.assign(this.__dataToBePushed, data);
 
-        this.__queries[name] = {
-          query,
-          mql,
-          listener,
-        };
+      this.__pushTimeout = setTimeout(() => {
+        this.pushEventTo(
+          this.el,
+          "liveview-responsive-change",
+          this.__dataToBePushed
+        );
+        this.__dataToBePushed = {};
+        this.__pushTimeout = null;
+      }, debounceTimeout);
+    },
 
-        return {
-          ...dataToBePushed,
-          [name]: mql.matches,
-        };
-      },
-      {}
-    );
+    __handleSyncEvent(data) {
+      const dataToBePushed = Object.entries(data).reduce(
+        (dataToBePushed, [name, query]) => {
+          if (this.__queries[name]) {
+            this.__queries[name].mql.removeEventListener(
+              "change",
+              this.__queries[name].listener
+            );
+          }
 
-    this.__push(dataToBePushed);
-  },
-};
+          const mql = window.matchMedia(query);
+          const listener = (e) => {
+            this.__push({
+              [name]: e.matches,
+            });
+          };
+
+          mql.addEventListener("change", listener);
+
+          this.__queries[name] = {
+            query,
+            mql,
+            listener,
+          };
+
+          return {
+            ...dataToBePushed,
+            [name]: mql.matches,
+          };
+        },
+        {}
+      );
+
+      this.__push(dataToBePushed);
+    },
+  };
+}
