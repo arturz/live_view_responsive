@@ -1,27 +1,25 @@
-defmodule LiveviewResponsive do
+defmodule LiveViewResponsive do
   @moduledoc """
-  Documentation for `LiveviewResponsive`.
+  Documentation for `LiveViewResponsive`.
   """
 
-  defdelegate assign_media_query(socket, name, opts, default_value \\ false),
-    to: LiveviewResponsive.Core
+  defdelegate assign_media_query(socket, name, opts),
+    to: LiveViewResponsive.Core
 
-  defdelegate liveview_responsive_synced?(assigns), to: LiveviewResponsive.Core
+  defdelegate live_view_responsive(assigns), to: LiveViewResponsive.Components.LiveViewResponsive
 
-  defdelegate liveview_responsive(assigns), to: LiveviewResponsive.Components.LiveviewResponsive
-
-  defdelegate media_query(assigns), to: LiveviewResponsive.Components.MediaQuery
+  defdelegate media_query(assigns), to: LiveViewResponsive.Components.MediaQuery
 
   defmacro __using__(_opts) do
     quote do
-      import LiveviewResponsive
+      import LiveViewResponsive
 
       @doc """
       Event handler for client-side media queries change.
       Runs `update` inside the component's module, so derived assigns can be calculated.
       """
       def handle_event("liveview-responsive-change", params, socket) do
-        LiveviewResponsive.Core.liveview_responsive_change_event_handler(socket, params)
+        LiveViewResponsive.Core.live_view_responsive_change_event_handler(socket, params)
       end
 
       @doc """
@@ -29,8 +27,8 @@ defmodule LiveviewResponsive do
       For some reason it is not possible to `push_event` inside the hook, so this function is used instead.
       I used `handle_async`, because calls and casts are delegated to LiveView, not LiveComponent.
       """
-      def handle_async(:liveview_responsive_start_sync, _params, socket) do
-        LiveviewResponsive.Core.liveview_responsive_start_sync_async_handler(socket)
+      def handle_async(:live_view_responsive_push_queries_to_client, _params, socket) do
+        LiveViewResponsive.Core.live_view_responsive_push_queries_to_client_handler(socket)
       end
     end
   end
