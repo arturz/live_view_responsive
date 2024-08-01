@@ -1,4 +1,4 @@
-defmodule LiveviewResponsive.Case do
+defmodule LiveViewResponsive.Case do
   @moduledoc false
 
   defmacro __using__(_opts) do
@@ -7,6 +7,8 @@ defmodule LiveviewResponsive.Case do
 
       import ExUnit.CaptureIO
       import ExUnit.CaptureLog
+
+      import Phoenix.LiveViewTest
     end
   end
 end
