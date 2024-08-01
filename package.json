@@ -1,5 +1,5 @@
 {
-  "name": "liveview_responsive",
+  "name": "live_view_responsive",
   "version": "0.1.0",
   "description": "**TODO: Add description**",
   "module": "./lib_client/index.js",

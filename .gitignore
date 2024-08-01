@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-liveview_responsive-*.tar
+live_view_responsive-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/

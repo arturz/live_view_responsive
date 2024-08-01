@@ -1,6 +1,6 @@
-export const LiveviewResponsiveHook = createLiveviewResponsiveHook();
+export const LiveViewResponsiveHook = createLiveViewResponsiveHook();
 
-export function createLiveviewResponsiveHook(debounceTimeout = 10) {
+export function createLiveViewResponsiveHook(debounceTimeout = 10) {
   return {
     mounted() {
       this.__queries = {};

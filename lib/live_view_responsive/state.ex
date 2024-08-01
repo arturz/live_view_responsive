@@ -1,7 +1,7 @@
-defmodule LiveviewResponsive.State do
+defmodule LiveViewResponsive.State do
   @type t :: %__MODULE__{
           queries: %{atom() => %{value: boolean(), query: String.t()}},
-          status: :initial | :hook_attached | :hook_runned | :synced
+          status: :initial | :hook_attached | :queries_pushed | :synced
         }
   defstruct queries: %{}, status: :initial
 
@@ -11,24 +11,20 @@ defmodule LiveviewResponsive.State do
     %__MODULE__{}
   end
 
-  def get_status(%__MODULE__{} = state) do
-    state.status
+  def get_status(%__MODULE__{status: status}) do
+    status
   end
 
   def set_status(%__MODULE__{status: :initial} = state, :hook_attached) do
-    Logger.debug("LiveviewResponsive.State.set_status: hook_attached")
-
     Map.put(state, :status, :hook_attached)
   end
 
-  def set_status(%__MODULE__{status: :hook_attached} = state, :hook_runned) do
-    Logger.debug("LiveviewResponsive.State.set_status: hook_runned")
-
-    Map.put(state, :status, :hook_runned)
+  def set_status(%__MODULE__{status: :hook_attached} = state, :queries_pushed) do
+    Map.put(state, :status, :queries_pushed)
   end
 
-  def set_status(%__MODULE__{status: :hook_runned} = state, :synced) do
-    Logger.debug("LiveviewResponsive.State.set_status: synced")
+  def set_status(%__MODULE__{status: :queries_pushed} = state, :synced) do
+    Logger.debug("LiveViewResponsive media queries synced")
 
     Map.put(state, :status, :synced)
   end

@@ -3,7 +3,7 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
 
     use ExampleAppWeb, :live_component
 
-    use LiveviewResponsive
+    use LiveViewResponsive
 
     require Logger
 
@@ -50,10 +50,9 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
     @spec render(atom() | %{:columns_count => any(), optional(any()) => any()}) ::
             Phoenix.LiveView.Rendered.t()
     def render(assigns) do
-
       ~H"""
       <div>
-        <.liveview_responsive />
+        <.live_view_responsive myself={@myself} />
 
         <.media_query max-width={1224}>
           <p>You are a tablet or mobile</p>
@@ -76,7 +75,7 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
         <div :if={@xl}>xl</div>
         <div :if={@lg}>lg</div>
 
-        <div id={@id} class="flex flex-col gap-12" :if={liveview_responsive_synced?(assigns)}>
+        <div id={@id} class="flex flex-col gap-12" :if={@live_view_responsive_synced}>
           <div :for={row <- @tree} class="flex justify-center gap-12">
             <%= if length(row) <= @columns_count do %>
               <div

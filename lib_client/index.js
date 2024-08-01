@@ -1,4 +1,2 @@
-import { LiveviewResponsiveHook } from "./liveviewResponsiveHook";
-import { LiveviewResponsiveMediaQueryHook } from "./liveviewResponsiveMediaQueryHook";
-
-export { LiveviewResponsiveHook, LiveviewResponsiveMediaQueryHook };
+export { LiveViewResponsiveHook } from "./liveViewResponsiveHook";
+export { LiveViewResponsiveMediaQueryHook } from "./liveViewResponsiveMediaQueryHook";

@@ -1,4 +1,4 @@
-export const LiveviewResponsiveMediaQueryHook = {
+export const LiveViewResponsiveMediaQueryHook = {
   mounted() {
     const mql = window.matchMedia(this.el.dataset.query);
     mql.addEventListener("change", (e) => this.__changeHandler(e.matches));

@@ -1,4 +1,4 @@
-defmodule LiveviewResponsive.QueryBuilder do
+defmodule LiveViewResponsive.QueryBuilder do
   @moduledoc false
 
   @media_types_and_features %{
@@ -70,33 +70,21 @@ defmodule LiveviewResponsive.QueryBuilder do
     "max-resolution" => :string_or_number
   }
 
-  import LiveviewResponsive.Utils.StringUtils
-
   def build(opts) do
-    opts =
-      Enum.map(opts, fn {key, value} ->
-        key =
-          key
-          |> atom_to_string()
-          |> replace_underscores_with_hyphens()
-
-        {key, atom_to_string(value)}
-      end)
-
     query =
       Enum.find_value(opts, fn
         {"query", value} -> value
         _ -> false
       end)
 
-    unless is_nil(query) do
-      query
-    else
+    if is_nil(query) do
       opts
       |> Enum.map(fn {key, value} ->
         validate_and_format_media_type_or_feature(key, value)
       end)
       |> Enum.join(" and ")
+    else
+      query
     end
   end
 
@@ -111,7 +99,11 @@ defmodule LiveviewResponsive.QueryBuilder do
           |> Enum.max_by(&String.jaro_distance(key, &1))
 
         raise ArgumentError,
-              "The media type or feature \"#{key}\" could not be found. Did you mean \"#{suggestion}\"?\nIf your desired type or feature is not supported, you can use `query` to pass a custom media query."
+              """
+              The media type or feature \"#{key}\" could not be found.
+              Did you mean \"#{suggestion}\"?
+              If your desired type or feature is not supported, you can use `query` to pass a custom media query.
+              """
 
       :boolean ->
         unless is_boolean(value) do

@@ -22,8 +22,8 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import {
-  LiveviewResponsiveHook,
-  LiveviewResponsiveMediaQueryHook,
+  LiveViewResponsiveHook,
+  LiveViewResponsiveMediaQueryHook,
 } from "../../../";
 
 let csrfToken = document
@@ -31,8 +31,8 @@ let csrfToken = document
   .getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
-    LiveviewResponsiveHook,
-    LiveviewResponsiveMediaQueryHook,
+    LiveViewResponsiveHook,
+    LiveViewResponsiveMediaQueryHook,
   },
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
