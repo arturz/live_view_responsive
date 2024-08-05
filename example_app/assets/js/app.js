@@ -24,7 +24,7 @@ import topbar from "../vendor/topbar";
 import {
   LiveViewResponsiveHook,
   LiveViewResponsiveMediaQueryHook,
-} from "../../../";
+} from "live_view_responsive";
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
