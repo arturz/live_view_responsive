@@ -1,10 +1,56 @@
 # live_view_responsive
 
+Media queries for responsive design in Phoenix LiveView, a server-rendered Elixir framework. Heavily inspired by [react-responsive](https://github.com/yocontra/react-responsive).
+
+<div>
+  <a href="https://github.com/arturz/live_view_responsive/actions/workflows/ci.yml">
+    <img alt="CI Status" src="https://github.com/arturz/live_view_responsive/actions/workflows/ci.yml/badge.svg">
+  </a>
+  <a href="https://hex.pm/packages/live_view_responsive">
+    <img alt="Hex Version" src="https://img.shields.io/hexpm/v/live_view_responsive.svg">
+  </a>
+  <a href="https://hexdocs.pm/live_view_responsive">
+    <img alt="Hex Docs" src="https://img.shields.io/badge/hex.pm-docs-green.svg?style=flat">
+  </a>
+</div>
+
+## Table of Contents
+
+<ul style="margin-top: 2rem; margin-bottom: 2rem;">
+  <li>
+    <a href="#information">Information</a>
+  </li>
+  <li>
+    <a href="#installation">Installation</a>
+  </li>
+  <li>
+    <a href="#example-usage">Example Usage</a>
+    <ul>
+      <li><a href="#using-media_query-component">Using `<.media_query>` Component</a></li>
+      <li><a href="#using-media-query-assigns">Using Media Query Assigns</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#api">API</a>
+    <ul>
+      <li><a href="#using-properties">Using Properties</a></li>
+      <li><a href="#supported-media-features">Supported Media Features</a></li>
+      <li><a href="#supported-media-types">Supported Media Types</a></li>
+      <li><a href="#custom-media-query">Custom Media Query</a></li>
+      <li><a href="#initial-value-or-hiding-elements-until-media-query-is-synced">Initial Value or Hiding Elements Until Media Query is Synced
+</a></li>
+    </ul>
+  </li>
+  <li><a href="#easy-mode">Easy Mode</a></li>
+  <li><a href="#faq">FAQ</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+</ul>
+
 ## Information
 
-Media queries for responsive design in Phoenix LiveView, a server-rendered framework. It is heavily inspired by [react-responsive](https://github.com/yocontra/react-responsive).
+`live_view_responsive` provides an easy way to manage media queries in Phoenix LiveView applications. It allows you to create responsive designs without the need to write custom media queries or learn Tailwind CSS.
 
-## Install
+## Installation
 
 Add live_view_responsive to your list of dependencies in mix.exs:
 
@@ -12,7 +58,7 @@ Add live_view_responsive to your list of dependencies in mix.exs:
 # mix.exs
 def deps do
   [
-    {:live_view_responsive, "~> 1.0"}
+    {:live_view_responsive, "~> 0.1.0"}
   ]
 end
 ```
@@ -34,23 +80,23 @@ let liveSocket = new LiveSocket("/live", Socket, {
 });
 ```
 
-## Example usage
+## Example Usage
 
-### With `<.media_query>` component
+### Using `<.media_query>` component
 
 ```elixir
 defmodule ExampleAppWeb.Example do
-  use ExampleAppWeb, :component
+  use Phoenix.Component
 
   import LiveViewResponsive
 
   def example(assigns) do
     ~H"""
     <.media_query max_width={1224}>
-      <p>You are a tablet or mobile</p>
+      <p>You are on a tablet or mobile</p>
     </.media_query>
     <.media_query min_width={1225}>
-      <p>You are a desktop or laptop</p>
+      <p>You are on a desktop or laptop</p>
       <.media_query min_width={1500}>
         <p>You also have a huge screen</p>
       </.media_query>
@@ -63,7 +109,7 @@ end
 - ✅ Toggles CSS display property on media query change with zero latency. ⚡
 - ✅ No need to write custom media queries or learn Tailwind.
 
-### With media query assigns
+### Using media query assigns
 
 ```elixir
 defmodule ExampleAppWeb.ExampleComponent do
@@ -71,31 +117,32 @@ defmodule ExampleAppWeb.ExampleComponent do
 
   use LiveViewResponsive
 
+  @impl true
   def mount(socket) do
     socket =
       socket
-      |> assign_media_query(:is_tablet_or_mobile, max_width: "1224px")
-      |> assign_media_query(:is_desktop_or_laptop, min_width: "1225px")
-      |> assign_media_query(:is_portrait, orientation: "portrait")
+      |> assign_media_query(:tablet_or_mobile, max_width: 1224)
+      |> assign_media_query(:desktop_or_laptop, min_width: 1225)
+      |> assign_media_query(:portrait, orientation: "portrait")
 
     {:ok, socket}
   end
 
-  @impl true
   def render(assigns) do
     ~H"""
     <div>
       <.live_view_responsive myself={@myself} />
+
       <h1>Device test</h1>
-      <p :if={@is_desktop_or_laptop}>
-        You are a desktop or laptop
+      <p :if={@tablet_or_mobile}>
+        You are on a tablet or mobile phone
       </p>
-      <p :if={@is_tablet_or_mobile}>
-        You are a tablet or mobile phone
+      <p :if={@desktop_or_laptop}>
+        You are on a desktop or laptop
       </p>
       <p>
         You are in
-        <%= if assigns.is_portrait, do: "portrait", else: "landscape" %>
+        <%= if assigns.portrait, do: "portrait", else: "landscape" %>
         orientation
       </p>
     </div>
@@ -107,7 +154,7 @@ end
 - ✅ Gives greater control over what is rendered.
 - ✅ Assigned media queries are just boolean values updated automatically.
 
-Works only in [live components](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html). Both `use LiveViewResponsive` and `<.live_view_responsive myself={@myself} />` are required to make media query assigns work.
+Note: Works only in [live components](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html). Both `use LiveViewResponsive` and `<.live_view_responsive myself={@myself} />` are required to make media query assigns work.
 
 ## API
 
@@ -115,7 +162,7 @@ Works only in [live components](https://hexdocs.pm/phoenix_live_view/Phoenix.Liv
 
 To make things more idiomatic to Phoenix LiveView, its preferred to use snake_case shorthands to construct media queries, but the kebab-case syntax is also supported.
 
-For a list of all possible shorthands see [query_builder.ex](https://github.com/arturz/live_view_responsive/blob/1a3649fd36ebd94bb15fa457e30691c890c9e047/lib/live_view_responsive/query_builder.ex#L4).
+For a list of all possible shorthands see [media_types_and_features.ex](https://github.com/arturz/live_view_responsive/tree/main/lib/live_view_responsive/constants/media_types_and_features.ex).
 
 If shorthand accepts a string or number, any number given will be expanded to px (`1234` becomes `1234px`).
 
@@ -123,7 +170,7 @@ Media query assigns can be constructed like this:
 
 ```elixir
 socket
-|> assign_media_query(:is_tablet, min_width: 600, max_width: 900)
+|> assign_media_query(:tablet, min_width: 600, max_width: 900)
 ```
 
 or with media query component attributes:
@@ -148,33 +195,35 @@ To use media types pass them with `true` or `false` value.
 
 ```elixir
 socket
-|> assign_media_query(:is_screen, screen: true)      # screen
-|> assign_media_query(:is_not_screen, screen: false) # not screen
+|> assign_media_query(:screen, screen: true)      # screen
+|> assign_media_query(:not_screen, screen: false) # not screen
 ```
 
 #### Custom media query
 
-Sometimes you need to create a complex query or a bleeding edge feature. In such cases, you can pass a custom query string.
+Sometimes you need to create a complex query or use a bleeding edge feature. In such cases, you can pass a custom query string.
 
 ```elixir
 socket
-|> assign_media_query(:is_custom, query: "(min-width: 600px) and (max-width: 900px)")
+|> assign_media_query(:tablet, query: "(min-width: 600px) and (max-width: 900px)")
 ```
 
 ### Initial value or hiding elements until media query is synced
 
-Because `assign_media_query` calls need to receive information from the JS, their values are all set to false on the first render.
+Because `assign_media_query` calls need to receive information from the front-end, their values are all set to false on the first render.
 
-💡 Component `<media_query>` is always up to date with the front-end, so it's safe to use without additional checks.
+💡 The `<.media_query>` component is always up to date, so it's safe to use without additional checks.
 
 #### Hiding elements until synced
 
-To hide elements until information about matching media queries is received and prevent flickering, check the `live_view_responsive_synced` assign.
+To hide elements until information about matching media queries is received from the front-end for the first time and prevent flickering, check the `@live_view_responsive_synced` assign.
 
 ```elixir
 def render(assigns) do
   ~H"""
   <div>
+    <.live_view_responsive myself={@myself} />
+
     <span :if={@live_view_responsive_synced}>
       <%= if @small_screen, do: "Small screen", else: "Big screen" %>
     </span>
@@ -185,11 +234,11 @@ end
 
 #### Initial value
 
-To make the media query match on the first render, add the `initial: true` keyword:
+Alternatively, to make the media query match on the first render, add the `initial: true` keyword:
 
 ```elixir
-|> assign_media_query(:is_mobile, min_width: 600, initial: true)
-|> assign_media_query(:is_desktop, min_width: 1200)
+|> assign_media_query(:mobile, min_width: 600, initial: true)
+|> assign_media_query(:desktop, min_width: 1200)
 ```
 
 ## Easy mode
@@ -199,7 +248,7 @@ You can create your application-specific breakpoints and reuse them easily.
 ```elixir
 defmodule ExampleApp.LiveViewResponsive do
   @moduledoc """
-  Generates breakpoints for liveview_responsive design.
+  Generates breakpoints for live_view_responsive design.
 
   For each breakpoint new component named `{breakpoint}_media_query` is generated, for example:
 
@@ -222,11 +271,11 @@ defmodule ExampleApp.LiveViewResponsive do
 end
 ```
 
-Then you can use a defined module instead of `LiveViewResponsive` in your components.
+Then you can use the defined module instead of `LiveViewResponsive` in your components.
 
 ```elixir
 defmodule ExampleAppWeb.Example do
-  use ExampleAppWeb, :component
+  use Phoenix.Component
 
   import ExampleApp.LiveViewResponsive
 
@@ -256,16 +305,17 @@ defmodule ExampleAppWeb.ExampleLiveComponent do
 
   use ExampleApp.LiveViewResponsive
 
+  @impl true
   def mount(socket) do
     socket
     |> assign_mobile_media_query()
   end
 
-  @impl true
   def render(assigns) do
     ~H"""
     <div>
       <.live_view_responsive myself={@myself} />
+
       <span :if={@mobile}>
         You are on a mobile
       </span>
@@ -276,20 +326,21 @@ defmodule ExampleAppWeb.ExampleLiveComponent do
 end
 ```
 
-# FAQ
+## FAQ
 
 <details>
-<summary>Changes of a new variable based on media query assigns do not cause rerender of live component</summary>
+<summary>Changes of the new variable based on media query assigns do not cause rerender of live component</summary>
 
 It happens when you calculate new variables based on the media query assigns in the `render/1` callback. You have to assign them in the `update/2` callback instead.
 
 Given such media query assigns:
 
 ```elixir
+@impl true
 def mount(socket) do
   socket
-  |> assign_media_query(:is_mobile, min_width: 600)
-  |> assign_media_query(:is_desktop, min_width: 1200)
+  |> assign_media_query(:mobile, min_width: 600)
+  |> assign_media_query(:desktop, min_width: 1200)
 end
 ```
 
@@ -298,7 +349,7 @@ end
 ```elixir
 def render(assigns) do
   # this will not work
-  small_screen = assigns.is_mobile and not assigns.is_desktop
+  small_screen = assigns.mobile and not assigns.desktop
 
   ~H"""
   <div>
@@ -313,7 +364,7 @@ end
 ```elixir
 @impl true
 def update(assigns, socket) do
-  small_screen = assigns.is_mobile and not assigns.is_desktop
+  small_screen = assigns.mobile and not assigns.desktop
 
   socket = assign(socket, :small_screen, small_screen)
 
@@ -331,12 +382,6 @@ end
 
 </details>
 
-# Roadmap
+## Contributing
 
-- [x] - Create breakpoints module
-- [x] - Fix `live_view_responsive_synced?` not updating on rerender (consider creating `live_view_responsive_synced` assign instead)
-- [x] - Add tests for `<.media_query>`
-- [x] - Add tests for `assign_media_query`
-- [x] - Add tests for breakpoints module
-- [x] - Change name to `live_view_responsive`
-- [x] - Remove last default argument of assign_media_query and use `initial` key instead
+Contributions of any kind are welcome! If you have a feature request, found a bug, or want to improve the documentation, feel free to open an issue or a pull request. And don't forget to star the repository if you like the project. 🌟
