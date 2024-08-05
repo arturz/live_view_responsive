@@ -1,6 +1,6 @@
 defmodule LiveViewResponsive.Breakpoints do
   @moduledoc """
-  Generates breakpoints for liveview_responsive design.
+  Generates breakpoints for live_view_responsive package.
 
   Usage:
 
@@ -28,7 +28,7 @@ defmodule LiveViewResponsive.Breakpoints do
 
   ```elixir
   socket
-  |> assign_mobile_media_query(true)
+  |> assign_mobile_media_query(initial: true)
   |> assign_tablet_media_query()
   ```
   """
