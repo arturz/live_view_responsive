@@ -7,6 +7,7 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
 
     require Logger
 
+    @impl true
     def mount(socket) do
       socket =
         socket
@@ -55,10 +56,10 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
         <.live_view_responsive myself={@myself} />
 
         <.media_query max-width={1224}>
-          <p>You are a tablet or mobile</p>
+          <p>You are on a tablet or mobile</p>
         </.media_query>
         <.media_query min-width={1225}>
-          <p>You are a desktop or laptop</p>
+          <p>You are on a desktop or laptop</p>
           <.media_query min-width="1400px">
             <p>You also have a huge screen</p>
           </.media_query>
