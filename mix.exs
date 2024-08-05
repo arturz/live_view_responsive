@@ -4,7 +4,7 @@ defmodule LiveViewResponsive.MixProject do
   def project do
     [
       app: :live_view_responsive,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       elixirc_options: [
@@ -34,6 +34,7 @@ defmodule LiveViewResponsive.MixProject do
       {:phoenix_live_view, ">= 0.20.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:versioce, "~> 2.0.0", only: :dev, runtime: false},
 
       # Phoenix LiveView requires Floki as a test dependency.
       {:floki, ">= 0.30.0", only: :test}

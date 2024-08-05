@@ -63,7 +63,7 @@ Add live_view_responsive to your list of dependencies in mix.exs:
 # mix.exs
 def deps do
   [
-    {:live_view_responsive, "~> 0.1.0"}
+    {:live_view_responsive, "~> 0.1.1"}
   ]
 end
 ```
