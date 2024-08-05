@@ -32,7 +32,7 @@ defmodule LiveViewResponsive.BreakpointsTest do
       {:ok, view, _html} = live_isolated(conn, LiveViewResponsive.BreakpointsTestLiveView)
 
       for _ <- 1..2 do
-        assert_push_event(view, "liveview-responsive-sync", %{
+        assert_push_event(view, "live-view-responsive-sync", %{
           desktop: "(min-width: 1201px)",
           mobile: "(max-width: 700px)",
           tablet: "(min-width: 701px) and (max-width: 1200px)"
@@ -51,7 +51,7 @@ defmodule LiveViewResponsive.BreakpointsTest do
       html =
         view
         |> element("[data-phx-component=1] > [phx-hook=LiveViewResponsiveHook]")
-        |> render_hook("liveview-responsive-change", %{"desktop" => true, "mobile" => false})
+        |> render_hook("live-view-responsive-change", %{"desktop" => true, "mobile" => false})
 
       assert html =~ "#1 mobile" == false
       assert html =~ "#2 mobile"

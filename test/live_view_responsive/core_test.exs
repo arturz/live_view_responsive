@@ -17,7 +17,7 @@ defmodule LiveViewResponsive.CoreTest do
       {:ok, view, _html} = live_isolated(conn, LiveViewResponsive.AssignMediaQueryTestLiveView)
 
       for _ <- 1..2 do
-        assert_push_event(view, "liveview-responsive-sync", %{
+        assert_push_event(view, "live-view-responsive-sync", %{
           sm: "(max-width: 640px)",
           is_portrait: "(orientation: portrait)",
           md: "(min-width: 641px) and (max-width: 1024px)",
@@ -37,7 +37,7 @@ defmodule LiveViewResponsive.CoreTest do
       html =
         view
         |> element("[data-phx-component=1] > [phx-hook=LiveViewResponsiveHook]")
-        |> render_hook("liveview-responsive-change", %{"md" => true})
+        |> render_hook("live-view-responsive-change", %{"md" => true})
 
       assert html =~ "#1 medium screen"
       assert html =~ "#2 medium screen" == false
@@ -53,7 +53,7 @@ defmodule LiveViewResponsive.CoreTest do
       html =
         view
         |> element("[data-phx-component=1] > [phx-hook=LiveViewResponsiveHook]")
-        |> render_hook("liveview-responsive-change", %{
+        |> render_hook("live-view-responsive-change", %{
           "is_portrait" => true,
           "sm" => false,
           "md" => true,

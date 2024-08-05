@@ -6,7 +6,7 @@ export function createLiveViewResponsiveHook(debounceTimeout = 10) {
       this.__queries = {};
 
       this.handleEvent(
-        "liveview-responsive-sync",
+        "live-view-responsive-sync",
         this.__handleSyncEvent.bind(this)
       );
     },
@@ -37,7 +37,7 @@ export function createLiveViewResponsiveHook(debounceTimeout = 10) {
       this.__pushTimeout = setTimeout(() => {
         this.pushEventTo(
           this.el,
-          "liveview-responsive-change",
+          "live-view-responsive-change",
           this.__dataToBePushed
         );
         this.__dataToBePushed = {};
