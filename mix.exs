@@ -32,7 +32,6 @@ defmodule LiveViewResponsive.MixProject do
   defp deps do
     [
       {:phoenix_live_view, ">= 0.20.0"},
-      {:phoenix, ">= 1.0.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
 
