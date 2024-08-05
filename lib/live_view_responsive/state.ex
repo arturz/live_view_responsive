@@ -1,4 +1,6 @@
 defmodule LiveViewResponsive.State do
+  @moduledoc false
+
   @type t :: %__MODULE__{
           queries: %{atom() => %{value: boolean(), query: String.t()}},
           status: :initial | :hook_attached | :queries_pushed | :synced

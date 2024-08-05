@@ -1,4 +1,6 @@
 defmodule LiveViewResponsive.AssignMediaQueryTestLiveComponent do
+  @moduledoc false
+
   use Phoenix.LiveComponent
 
   use LiveViewResponsive
