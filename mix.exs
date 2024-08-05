@@ -5,7 +5,7 @@ defmodule LiveViewResponsive.MixProject do
     [
       app: :live_view_responsive,
       version: "0.1.0",
-      elixir: "~> 1.16",
+      elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       elixirc_options: [
         warnings_as_errors: true
@@ -47,7 +47,10 @@ defmodule LiveViewResponsive.MixProject do
       maintainers: ["Artur Ziętkiewicz"],
       links: %{
         "GitHub" => "https://github.com/arturz/live_view_responsive"
-      }
+      },
+      licenses: ["MIT"],
+      description:
+        "Media queries for responsive design in Phoenix LiveView. Heavily inspired by react-responsive."
     ]
   end
 
