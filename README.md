@@ -52,6 +52,11 @@ Media queries for responsive design in Phoenix LiveView, a server-rendered Elixi
 
 ## Installation
 
+Before you begin, ensure you have the following prerequisites:
+
+- Elixir 1.13+
+- Phoenix LiveView 0.20+
+
 Add live_view_responsive to your list of dependencies in mix.exs:
 
 ```elixir
@@ -259,7 +264,7 @@ defmodule ExampleApp.LiveViewResponsive do
   And a function named `assign_{breakpoint}_media_query` is created, for example:
 
   socket
-  |> assign_mobile_media_query(true)
+  |> assign_mobile_media_query(initial: true)
   |> assign_tablet_media_query()
   """
 

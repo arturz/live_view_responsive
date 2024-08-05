@@ -5,7 +5,7 @@ defmodule LiveViewResponsive.MixProject do
     [
       app: :live_view_responsive,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       elixirc_options: [
         warnings_as_errors: true
@@ -31,7 +31,7 @@ defmodule LiveViewResponsive.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:phoenix_live_view, ">= 0.18.0"},
+      {:phoenix_live_view, ">= 0.20.0"},
       {:phoenix, ">= 1.0.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
