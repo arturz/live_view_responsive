@@ -1,12 +1,17 @@
 {
   "name": "live_view_responsive",
   "version": "0.1.0",
-  "description": "**TODO: Add description**",
+  "description": "Media queries for responsive design in Phoenix LiveView",
   "module": "./lib_client/index.js",
   "main": "./lib_client/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artur Ziętkiewicz",
-  "license": "ISC"
+  "license": "ISC",
+  "files": [
+    "README.md",
+    "package.json",
+    "lib_client/*"
+  ]
 }
