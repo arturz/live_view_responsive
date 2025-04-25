@@ -49,17 +49,49 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mix-
 
-      - name: Install dependencies
+      # === live_view_responsive project steps ===
+      - name: Install dependencies (live_view_responsive)
         run: mix deps.get
 
-      - name: Compiles without warnings
+      - name: Compiles without warnings (live_view_responsive)
         run: mix compile --warnings-as-errors
 
-      - name: Check formatting
+      - name: Check formatting (live_view_responsive)
         run: mix format --check-formatted
 
-      - name: Run Credo in strict mode
+      - name: Run Credo in strict mode (live_view_responsive)
         run: mix credo --strict
 
-      - name: Run tests
+      - name: Run tests (live_view_responsive)
         run: mix test
+
+      # === example_app steps ===
+      - name: Install JS dependencies (example_app/assets)
+        run: npm install
+        working-directory: example_app/assets
+
+      - name: Install Google Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install Chromedriver
+        run: sudo apt-get install -y chromium-chromedriver
+
+      - name: Install dependencies (example_app)
+        run: mix deps.get
+        working-directory: example_app
+
+      - name: Compiles without warnings (example_app)
+        run: mix compile --warnings-as-errors
+        working-directory: example_app
+
+      - name: Check formatting (example_app)
+        run: mix format --check-formatted
+        working-directory: example_app
+
+      - name: Run Credo in strict mode (example_app)
+        run: mix credo --strict
+        working-directory: example_app
+
+      - name: Run tests (example_app)
+        run: mix test
+        working-directory: example_app
