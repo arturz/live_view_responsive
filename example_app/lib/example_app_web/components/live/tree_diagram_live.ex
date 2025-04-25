@@ -53,7 +53,7 @@ defmodule ExampleAppWeb.Components.Live.TreeDiagramLive do
     ~H"""
     <div>
       <.live_view_responsive myself={@myself} />
-      <div id={@id} class="flex flex-col gap-12" :if={@live_view_responsive_synced}>
+      <div :if={@live_view_responsive_synced} id={@id} class="flex flex-col gap-12">
         <div :for={tree_row <- @tree} class="flex justify-center gap-12">
           <%= if length(tree_row) <= @columns_count do %>
             <div

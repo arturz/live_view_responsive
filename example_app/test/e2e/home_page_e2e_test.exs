@@ -18,7 +18,9 @@ defmodule ExampleAppWeb.E2E.HomePageE2ETest do
     %{name: "landscape", width: 900, height: 600, assign: "landscape"}
   ]
 
-  feature "renders correct elements based on media query assigns for each breakpoint", %{session: session} do
+  feature "renders correct elements based on media query assigns for each breakpoint", %{
+    session: session
+  } do
     Enum.each(@breakpoints, fn %{name: name, width: width, height: height, assign: assign} ->
       session = Browser.resize_window(session, width, height)
       session = Browser.visit(session, "/")
@@ -26,14 +28,16 @@ defmodule ExampleAppWeb.E2E.HomePageE2ETest do
       assert Browser.has?(session, Query.css("span[data-testid='assign-#{assign}']"))
 
       @breakpoints
-      |> Enum.filter(& Map.get(&1, :width) > width and Map.get(&1, :height) > height)
+      |> Enum.filter(&(Map.get(&1, :width) > width and Map.get(&1, :height) > height))
       |> Enum.each(fn %{assign: other_assign} ->
         refute Browser.has?(session, Query.css("span[data-testid='assign-#{other_assign}']"))
       end)
     end)
   end
 
-  feature "renders correct elements based on media query components for each breakpoint", %{session: session} do
+  feature "renders correct elements based on media query components for each breakpoint", %{
+    session: session
+  } do
     Enum.each(@breakpoints, fn %{name: name, width: width, height: height, assign: assign} ->
       session = Browser.resize_window(session, width, height)
       session = Browser.visit(session, "/")
@@ -41,7 +45,7 @@ defmodule ExampleAppWeb.E2E.HomePageE2ETest do
       assert Browser.has?(session, Query.css("span[data-testid='component-#{name}']"))
 
       @breakpoints
-      |> Enum.filter(& Map.get(&1, :width) > width and Map.get(&1, :height) > height)
+      |> Enum.filter(&(Map.get(&1, :width) > width and Map.get(&1, :height) > height))
       |> Enum.each(fn %{name: other_name} ->
         refute Browser.has?(session, Query.css("span[data-testid='component-#{other_name}']"))
       end)
