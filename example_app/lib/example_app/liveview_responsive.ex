@@ -1,4 +1,6 @@
 defmodule ExampleApp.LiveViewResponsive do
+  @moduledoc false
+
   use LiveViewResponsive.Breakpoints,
     sm: [min_width: 576],
     md: [min_width: 768],
