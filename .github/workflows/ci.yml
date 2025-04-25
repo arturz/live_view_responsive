@@ -74,7 +74,7 @@ jobs:
         uses: browser-actions/setup-chrome@v1
 
       - name: Install Chromedriver
-        run: sudo apt-get install -y chromium-chromedriver
+        uses: nanasess/setup-chromedriver@v2
 
       - name: Install dependencies (example_app)
         run: mix deps.get
@@ -90,6 +90,10 @@ jobs:
 
       - name: Run Credo in strict mode (example_app)
         run: mix credo --strict
+        working-directory: example_app
+
+      - name: Build assets (example_app)
+        run: mix assets.deploy
         working-directory: example_app
 
       - name: Run tests (example_app)

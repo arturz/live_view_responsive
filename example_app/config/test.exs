@@ -8,6 +8,17 @@ config :example_app, ExampleAppWeb.Endpoint,
   server: true
 
 config :wallaby,
+  driver: Wallaby.Chrome,
+  chrome: [
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--disable-dev-tools",
+      "--disable-extensions"
+    ]
+  ],
   otp_app: :example_app,
   base_url: "http://localhost:4002"
 
