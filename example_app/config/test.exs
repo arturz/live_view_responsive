@@ -5,7 +5,22 @@ import Config
 config :example_app, ExampleAppWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "nz11cARZHThIJYfcB2c0btc/yXloegtxc+XdeeP6C/lciNzTWwbpag6z6Hs9ejoo",
-  server: false
+  server: true
+
+config :wallaby,
+  driver: Wallaby.Chrome,
+  chrome: [
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--disable-dev-tools",
+      "--disable-extensions"
+    ]
+  ],
+  otp_app: :example_app,
+  base_url: "http://localhost:4002"
 
 # In test we don't send emails.
 config :example_app, ExampleApp.Mailer, adapter: Swoosh.Adapters.Test

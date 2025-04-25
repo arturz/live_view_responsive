@@ -5,7 +5,7 @@ defmodule ExampleApp.MixProject do
     [
       app: :example_app,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -32,11 +32,13 @@ defmodule ExampleApp.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.7.12"},
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.20.2"},
       {:floki, ">= 0.30.0", only: :test},
+      {:wallaby, "~> 0.30.10", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},

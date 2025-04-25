@@ -1,8 +1,8 @@
 defmodule ExampleAppWeb.HomeLive do
   use ExampleAppWeb, :live_view
 
-  alias ExampleAppWeb.Components.Live.TreeDiagramLive
   alias ExampleAppWeb.Components.Live.DeviceTestLive
+  alias ExampleAppWeb.Components.Live.TreeDiagramLive
 
   def render(assigns) do
     ~H"""
