@@ -68,7 +68,7 @@ def deps do
 end
 ```
 
-In `assets/js/app.js` add live_view_responsive hooks:
+In `assets/js/app.js` add live_view_responsive hooks and pass initial viewport dimensions in connect params:
 
 ```js
 // assets/js/app.js
@@ -81,6 +81,10 @@ let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     LiveViewResponsiveHook,
     LiveViewResponsiveMediaQueryHook,
+  },
+  params: {
+    width: window.innerWidth,
+    height: window.innerHeight,
   },
 });
 ```
