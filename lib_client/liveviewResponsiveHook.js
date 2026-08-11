@@ -5,6 +5,14 @@ export function createLiveViewResponsiveHook(debounceTimeout = 10) {
     mounted() {
       this.__queries = {};
 
+      const connectParams = this.liveSocket?.params || {};
+      if (connectParams.width && connectParams.height) {
+        this.pushEvent("live-view-responsive-initial-params", {
+          width: connectParams.width,
+          height: connectParams.height,
+        });
+      }
+
       this.handleEvent(
         "live-view-responsive-sync",
         this.__handleSyncEvent.bind(this)

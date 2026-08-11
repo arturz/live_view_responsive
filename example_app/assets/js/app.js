@@ -35,7 +35,11 @@ let liveSocket = new LiveSocket("/live", Socket, {
     LiveViewResponsiveMediaQueryHook,
   },
   longPollFallbackMs: 2500,
-  params: { _csrf_token: csrfToken },
+  params: {
+    _csrf_token: csrfToken,
+    width: window.innerWidth,
+    height: window.innerHeight,
+  },
 });
 
 // Show progress bar on live navigation and form submits
